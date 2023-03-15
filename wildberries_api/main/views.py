@@ -1,8 +1,18 @@
+import pandas
+
 from django.shortcuts import render
-from django.http import HttpResponse
-import requests
+
+from .parser import parser_csr
 
 
 def index(request):
-    return HttpResponse('<h1>привет</h1>')
+    if request.method == 'POST':
+        if request.POST.get('article'):
+            article = request.POST.get('article')
+            print(article)
+            parser_csr(article)
+        if request.FILES.get('file'):
+            file = request.FILES.get('file')
+            print(file)
+    return render(request, 'main/index.html')
 
