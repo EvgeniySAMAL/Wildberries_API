@@ -24,5 +24,19 @@
     </div>
   </div>
 </nav>
+{% if data1 %}
+{{data1}}<br>
+{%else%}
+<p1>Артикул не передан</p1>
+<br>
+{% endif %}
+{% if data_file %}
+{%for el in data_file%}
+{{el}}<br>
+{%endfor%}
+{%else%}
+<p1>Файл не передан</p1>
+{% endif %}
+
 </body>
 </html>
