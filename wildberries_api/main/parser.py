@@ -1,10 +1,10 @@
 import requests
 import pandas
-from fake_useragent import UserAgent
+from .file_pydantic import Data_py
 
 HEADERS = {
     'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36'
-} # получаем рандомный user-agent
+}
 
 
 
@@ -14,15 +14,17 @@ def parser_csr(input_article:str):
             i = ("0" + str(i))
         a = f'https://basket-{i}.wb.ru/vol{input_article[:-5]}/part{input_article[:-3]}/{input_article}/info/ru/card.json'
         if not requests.get(a,headers=HEADERS).status_code == 404:
-            response = requests.get(a,headers=HEADERS).json()
-            article = response.get('nm_id')
-            name_article = response.get('selling')
-            brand_name = name_article.get('brand_name')
-            name = response.get('imt_name')
+            response = requests.get(a,headers=HEADERS).text
+            data = Data_py.parse_raw(response)
+
+            # article = response.get('nm_id')
+            # name_article = response.get('selling')
+            # brand_name = name_article.get('brand_name')
+            # name = response.get('imt_name')
             data = {
-                'name':name,
-                'article':article,
-                'brand':brand_name
+                'name':data.name,
+                'article':data.article,
+                'brand':data.brand_name.brand_name
             }
             return data
 
